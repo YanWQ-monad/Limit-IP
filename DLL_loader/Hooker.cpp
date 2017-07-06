@@ -4,13 +4,17 @@
 #include <cstdio>
 using std::string;
 
+#ifndef _T
+# define _T(st) L##st
+#endif
+
 typedef VOID (*SetHookOn_ptr_t)(HWND);
 struct IP_addr {
 	unsigned char a, b, c, d;
 	DWORD dwProcessPID;
 };
 
-FILE *log;
+FILE *flog;
 
 LPCWSTR GetProcessNameByPId(const DWORD ProcessID);
 
@@ -28,7 +32,7 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT Message, WPARAM wParam, LPARAM lParam) 
 			COPYDATASTRUCT* cds = (COPYDATASTRUCT*)lParam;
 			IP_addr* ip = (IP_addr*)cds -> lpData;
 			
-			fprintf(log, "%ls visited %d.%d.%d.%d\n", GetProcessNameByPId(ip->dwProcessPID), ip->a, ip->b, ip->c, ip->d);
+			fprintf(flog, "%ls visited %d.%d.%d.%d\n", GetProcessNameByPId(ip->dwProcessPID), ip->a, ip->b, ip->c, ip->d);
 			printf("%ls visited %d.%d.%d.%d\n", GetProcessNameByPId(ip->dwProcessPID), ip->a, ip->b, ip->c, ip->d);
 			
 			break;
@@ -75,16 +79,16 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	wc.hCursor		 = LoadCursor(NULL, IDC_ARROW);
 	
 	wc.hbrBackground = (HBRUSH)(COLOR_WINDOW+1);
-	wc.lpszClassName = "WindowClass";
+	wc.lpszClassName = _T("WindowClass");
 	wc.hIcon		 = LoadIcon(NULL, IDI_APPLICATION); /* Load a standard icon */
 	wc.hIconSm		 = LoadIcon(NULL, IDI_APPLICATION); /* use the name "A" to use the project icon */
 
 	if(!RegisterClassEx(&wc)) {
-		MessageBox(NULL, "Window Registration Failed!","Error!",MB_ICONEXCLAMATION|MB_OK);
+		MessageBox(NULL, _T("Window Registration Failed!"),_T("Error!"),MB_ICONEXCLAMATION|MB_OK);
 		return 0;
 	}
 
-	HWND hwnd = CreateWindowEx(WS_EX_CLIENTEDGE,"WindowClass","Hooker",WS_VISIBLE|WS_OVERLAPPEDWINDOW,
+	HWND hwnd = CreateWindowEx(WS_EX_CLIENTEDGE,_T("WindowClass"),_T("Hooker"),WS_VISIBLE|WS_OVERLAPPEDWINDOW,
 		CW_USEDEFAULT, /* x */
 		CW_USEDEFAULT, /* y */
 		640, /* width */
@@ -92,7 +96,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 		NULL,NULL,hInstance,NULL);
 
 	if(hwnd == NULL) {
-		MessageBox(NULL, "Window Creation Failed!","Error!",MB_ICONEXCLAMATION|MB_OK);
+		MessageBox(NULL, _T("Window Creation Failed!"),_T("Error!"),MB_ICONEXCLAMATION|MB_OK);
 		return 0;
 	}
 
@@ -103,10 +107,10 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	freopen("CON", "w", stdout);
 	setlocale(LC_CTYPE, "chs");
 	
-	HINSTANCE hDllInst = LoadLibrary("Limit-IP.dll");
+	HINSTANCE hDllInst = LoadLibrary(_T("Limit-IP.dll"));
 	SetHookOn_ptr_t SetHookOn = NULL;
 	if (hDllInst == NULL)
-		if ((hDllInst = LoadLibrary("Limit-IP.dll")) == NULL) {
+		if ((hDllInst = LoadLibrary(_T("Limit-IP.dll"))) == NULL) {
 			printf("Can't Load DLL\n");
 			goto end;
 		}
@@ -116,7 +120,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 		goto end;
 	}
 	SetHookOn(hwnd);
-	log = fopen("log.log", "a");
+	flog = fopen("log.log", "a");
 	
 	while(GetMessage(&Msg, NULL, 0, 0) > 0) { /* If no error is received... */
 		TranslateMessage(&Msg); /* Translate key codes to chars if present */
@@ -126,7 +130,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	goto end2;
 	
 	//SetHookOff();
-	fclose(log);
+	fclose(flog);
 	end:
 	getchar();
 	end2:

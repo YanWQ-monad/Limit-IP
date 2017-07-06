@@ -33,16 +33,19 @@ VOID SetHookOff() {
 bool ALLOW = true;
 
 CILHook ConnectWHook;
+CILHook SendtoWHook;
 
 BOOL APIENTRY DllMain(HANDLE hModule, DWORD ul_reason_for_call, LPVOID lpReserved) {
 	switch(ul_reason_for_call) {
 		case DLL_PROCESS_ATTACH:
 			g_hInst = (HINSTANCE)hModule;
 			ConnectWHook.Hook(TEXT("Ws2_32.dll"), "connect", (PROC)MyConnect);
+			SendtoWHook .Hook(TEXT("Ws2_32.dll"), "sendto" , (PROC)MySendto );
 			puts("Hooked!");
 			break;
 		case DLL_PROCESS_DETACH :
 			ConnectWHook.UnHook();
+			SendtoWHook .UnHook();
 			if (g_hHook != NULL)
 				SetHookOff();
 			puts("UnHooked!\n");

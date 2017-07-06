@@ -149,6 +149,7 @@
     <ClCompile Include="IP_filter.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MyHookFunc\MyConnect.cpp" />
+    <ClCompile Include="MyHookFunc\MySendto.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
