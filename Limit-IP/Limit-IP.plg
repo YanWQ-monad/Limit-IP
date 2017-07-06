@@ -1,0 +1,36 @@
+<html>
+<body>
+<pre>
+<h1>Build Log</h1>
+<h3>
+--------------------Configuration: Limit-IP - Win32 Debug--------------------
+</h3>
+<h3>Command Lines</h3>
+Creating temporary file "C:\DOCUME~1\ADMINI~1\LOCALS~1\Temp\RSPF45.tmp" with contents
+[
+/nologo /MTd /W3 /Gm /GX /ZI /Od /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D "_MBCS" /D "_USRDLL" /D "Limit-IP_EXPORTS" /Fp"Debug/Limit-IP.pch" /YX /Fo"Debug/" /Fd"Debug/" /FD /GZ  /c 
+"C:\Documents and Settings\Administrator\桌面\Limit-IP\Limit-IP\main.cpp"
+]
+Creating command line "cl.exe @C:\DOCUME~1\ADMINI~1\LOCALS~1\Temp\RSPF45.tmp" 
+Creating temporary file "C:\DOCUME~1\ADMINI~1\LOCALS~1\Temp\RSPF46.tmp" with contents
+[
+kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /nologo /dll /incremental:yes /pdb:"Debug/Limit-IP.pdb" /debug /machine:I386 /out:"Debug/Limit-IP.dll" /implib:"Debug/Limit-IP.lib" /pdbtype:sept 
+".\Debug\main.obj"
+]
+Creating command line "link.exe @C:\DOCUME~1\ADMINI~1\LOCALS~1\Temp\RSPF46.tmp"
+<h3>Output Window</h3>
+Compiling...
+main.cpp
+c:\documents and settings\administrator\桌面\hook\hook\main.cpp(19) : error C2065: 'g_hInst' : undeclared identifier
+c:\documents and settings\administrator\桌面\hook\hook\main.cpp(27) : error C2146: syntax error : missing ';' before identifier 'RegSetValueExWHook'
+c:\documents and settings\administrator\桌面\hook\hook\main.cpp(27) : error C2501: 'CILHook' : missing storage-class or type specifiers
+c:\documents and settings\administrator\桌面\hook\hook\main.cpp(27) : fatal error C1004: unexpected end of file found
+执行 cl.exe 时出错.
+
+
+
+<h3>Results</h3>
+Limit-IP.dll - 1 error(s), 0 warning(s)
+</pre>
+</body>
+</html>

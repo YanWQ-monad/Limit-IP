@@ -30,3 +30,8 @@
 *.exe
 *.out
 *.app
+
+# Release Dirs
+Limit-IP/Release
+Limit-IP/Debug
+Limit-IP/.vs
